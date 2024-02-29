@@ -29,7 +29,10 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <TestPlans>
          <TestPlanReference
-            reference = "container:Rick and Morty.xctestplan"
+            reference = "container:Rick and Morty.xctestplan">
+         </TestPlanReference>
+         <TestPlanReference
+            reference = "container:../Rick and Morty.xctestplan"
             default = "YES">
          </TestPlanReference>
       </TestPlans>
