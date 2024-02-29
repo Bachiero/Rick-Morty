@@ -8,7 +8,10 @@
 import Foundation
 import UIKit
 
+
 @objc(MockAppDelegate)
+/// Mock app delegate for unit-testing.
+/// When tests are executed, app doesn't need to load regular appDelegate with it's resources
 class MockAppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?

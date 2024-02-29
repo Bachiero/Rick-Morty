@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+///  Navigation controller as entry point to hold the stack of viewControllers. 
 final class NavigationController: UINavigationController {
 
     override func viewDidLoad() {

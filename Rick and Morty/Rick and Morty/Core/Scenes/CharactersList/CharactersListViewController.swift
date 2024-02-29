@@ -11,6 +11,9 @@ protocol CharactersListView: AnyObject {
     
 }
 
+
+/// Controller to show the list of characters
+/// Including the search and filter to find the Schwifty
 final class CharactersListViewController: UIViewController {
     //MARK: Properties
     var presenter: CharactersListPresenter!
