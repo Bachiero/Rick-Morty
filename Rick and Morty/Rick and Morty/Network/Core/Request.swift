@@ -10,9 +10,9 @@ import Foundation
 /// This object should be used to create single request for API call
 final class Request {
     private let endpoint: Endpoint
-    private let pathComponents: Set<String>
+    private let pathComponents: [String]
     private let queryParameters: [URLQueryItem]
-    
+    public let httpMethod = "GET"
     
     /// Construct Request
     /// - Parameters:
@@ -21,7 +21,7 @@ final class Request {
     ///   - queryParameters: Array of query parameters
     init(
         endpoint: Endpoint,
-        pathComponents: Set<String> = [],
+        pathComponents: [String] = [],
         queryParameters: [URLQueryItem] = []
     ) {
         self.endpoint = endpoint
@@ -57,7 +57,7 @@ extension Request {
         return string
     }
     
-    private func getStringUrlForPathComponents(_ pathComponents: Set<String>) -> String? {
+    private func getStringUrlForPathComponents(_ pathComponents: [String]) -> String? {
         guard !pathComponents.isEmpty else { return nil }
         var string = ""
         pathComponents.forEach { string += "/\($0)"}

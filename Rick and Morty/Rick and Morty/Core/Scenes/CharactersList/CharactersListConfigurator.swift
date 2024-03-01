@@ -11,7 +11,14 @@ struct CharactersListConfigurator {
     func configured() -> UIViewController {
         let vc = CharactersListViewController()
         let router = CharactersListRouterImpl(controller: vc)
-        vc.presenter = CharactersListPresenterImpl(view: vc, router: router)
+        let gateway = CharactersListGatewayImpl()
+        let useCase = CharactersListUseCaseImpl(gateway: gateway)
+        
+        vc.presenter = CharactersListPresenterImpl(
+            view: vc,
+            router: router,
+            charactersListUseCase: useCase
+        )
         
         return vc
     }
