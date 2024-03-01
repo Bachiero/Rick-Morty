@@ -29,6 +29,9 @@
 		A5E235FA2B90EDF10057DB36 /* CharacterEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E235F92B90EDF10057DB36 /* CharacterEntity.swift */; };
 		A5E235FC2B90EDF90057DB36 /* EpisodeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E235FB2B90EDF90057DB36 /* EpisodeEntity.swift */; };
 		A5E235FE2B90EDFE0057DB36 /* LocationEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E235FD2B90EDFE0057DB36 /* LocationEntity.swift */; };
+		A5E236012B9115150057DB36 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236002B9115150057DB36 /* Request.swift */; };
+		A5E236032B91152A0057DB36 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236022B91152A0057DB36 /* Endpoint.swift */; };
+		A5E236052B9117BF0057DB36 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236042B9117BF0057DB36 /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +71,9 @@
 		A5E235F92B90EDF10057DB36 /* CharacterEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterEntity.swift; sourceTree = "<group>"; };
 		A5E235FB2B90EDF90057DB36 /* EpisodeEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeEntity.swift; sourceTree = "<group>"; };
 		A5E235FD2B90EDFE0057DB36 /* LocationEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationEntity.swift; sourceTree = "<group>"; };
+		A5E236002B9115150057DB36 /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		A5E236022B91152A0057DB36 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		A5E236042B9117BF0057DB36 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -193,6 +199,7 @@
 		A5E235DB2B90DDDD0057DB36 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				A5E235FF2B91150E0057DB36 /* Core */,
 				A5E235F82B90EDD10057DB36 /* Gateways */,
 				A5E235F72B90EDC80057DB36 /* Entities */,
 			);
@@ -214,6 +221,16 @@
 			children = (
 			);
 			path = Gateways;
+			sourceTree = "<group>";
+		};
+		A5E235FF2B91150E0057DB36 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A5E236002B9115150057DB36 /* Request.swift */,
+				A5E236022B91152A0057DB36 /* Endpoint.swift */,
+				A5E236042B9117BF0057DB36 /* Constants.swift */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -317,12 +334,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5E235E72B90DF5A0057DB36 /* CharactersListViewModel.swift in Sources */,
+				A5E236052B9117BF0057DB36 /* Constants.swift in Sources */,
 				A5E235EE2B90E7A10057DB36 /* CharacterDetailsConfigurator.swift in Sources */,
 				A51379082B8F93ED008E839E /* main.swift in Sources */,
 				A51378C72B8F8DCE008E839E /* Rick_and_Morty.xcdatamodeld in Sources */,
 				A5E235FC2B90EDF90057DB36 /* EpisodeEntity.swift in Sources */,
 				A5E235E32B90DF410057DB36 /* CharactersListConfigurator.swift in Sources */,
 				A51378C12B8F8DCE008E839E /* NavigationController.swift in Sources */,
+				A5E236032B91152A0057DB36 /* Endpoint.swift in Sources */,
 				A5E235EA2B90E7940057DB36 /* CharacterDetailsViewController.swift in Sources */,
 				A51379062B8F9378008E839E /* MockAppDelegate.swift in Sources */,
 				A5E235E12B90DF3B0057DB36 /* CharactersListPresenter.swift in Sources */,
@@ -333,6 +352,7 @@
 				A5E235DF2B90DF320057DB36 /* CharactersListViewController.swift in Sources */,
 				A5E235FA2B90EDF10057DB36 /* CharacterEntity.swift in Sources */,
 				A51378BD2B8F8DCE008E839E /* AppDelegate.swift in Sources */,
+				A5E236012B9115150057DB36 /* Request.swift in Sources */,
 				A5E235FE2B90EDFE0057DB36 /* LocationEntity.swift in Sources */,
 				A51378BF2B8F8DCE008E839E /* SceneDelegate.swift in Sources */,
 			);
