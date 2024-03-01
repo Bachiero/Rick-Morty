@@ -8,8 +8,5 @@
 import UIKit
 
 struct CharactersListViewModel {
-    let image: UIImage
-    let characterName: String
-    let status: String
-    let type: String
+    let screenTitle: String
 }

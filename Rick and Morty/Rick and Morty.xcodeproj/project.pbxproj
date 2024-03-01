@@ -39,6 +39,8 @@
 		A5E236112B9229950057DB36 /* LocationDomainEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236102B9229950057DB36 /* LocationDomainEntity.swift */; };
 		A5E236172B922E6F0057DB36 /* CharactersListUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236162B922E6F0057DB36 /* CharactersListUseCase.swift */; };
 		A5E2361E2B92320A0057DB36 /* UrlRequestFormattable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E2361D2B92320A0057DB36 /* UrlRequestFormattable.swift */; };
+		A5E236232B9260D20057DB36 /* CharactersListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236222B9260D20057DB36 /* CharactersListTableViewCell.swift */; };
+		A5E236252B9260DC0057DB36 /* CharactersListTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236242B9260DC0057DB36 /* CharactersListTableViewCellModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +90,8 @@
 		A5E236102B9229950057DB36 /* LocationDomainEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationDomainEntity.swift; sourceTree = "<group>"; };
 		A5E236162B922E6F0057DB36 /* CharactersListUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListUseCase.swift; sourceTree = "<group>"; };
 		A5E2361D2B92320A0057DB36 /* UrlRequestFormattable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlRequestFormattable.swift; sourceTree = "<group>"; };
+		A5E236222B9260D20057DB36 /* CharactersListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListTableViewCell.swift; sourceTree = "<group>"; };
+		A5E236242B9260DC0057DB36 /* CharactersListTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharactersListTableViewCellModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,11 +180,8 @@
 		A51378F32B8F9001008E839E /* CharactersList */ = {
 			isa = PBXGroup;
 			children = (
-				A5E235DE2B90DF320057DB36 /* CharactersListViewController.swift */,
-				A5E235E02B90DF3B0057DB36 /* CharactersListPresenter.swift */,
-				A5E235E22B90DF410057DB36 /* CharactersListConfigurator.swift */,
-				A5E235E42B90DF460057DB36 /* CharactersListRouter.swift */,
-				A5E235E62B90DF5A0057DB36 /* CharactersListViewModel.swift */,
+				A5E236202B9260A50057DB36 /* Core */,
+				A5E236212B9260BC0057DB36 /* Cells */,
 			);
 			path = CharactersList;
 			sourceTree = "<group>";
@@ -286,6 +287,27 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		A5E236202B9260A50057DB36 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A5E235DE2B90DF320057DB36 /* CharactersListViewController.swift */,
+				A5E235E02B90DF3B0057DB36 /* CharactersListPresenter.swift */,
+				A5E235E22B90DF410057DB36 /* CharactersListConfigurator.swift */,
+				A5E235E42B90DF460057DB36 /* CharactersListRouter.swift */,
+				A5E235E62B90DF5A0057DB36 /* CharactersListViewModel.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A5E236212B9260BC0057DB36 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				A5E236222B9260D20057DB36 /* CharactersListTableViewCell.swift */,
+				A5E236242B9260DC0057DB36 /* CharactersListTableViewCellModel.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -388,6 +410,7 @@
 			files = (
 				A5E2360D2B9229780057DB36 /* CharacterDomainEntity.swift in Sources */,
 				A5E235E72B90DF5A0057DB36 /* CharactersListViewModel.swift in Sources */,
+				A5E236252B9260DC0057DB36 /* CharactersListTableViewCellModel.swift in Sources */,
 				A5E236052B9117BF0057DB36 /* Constants.swift in Sources */,
 				A5E235EE2B90E7A10057DB36 /* CharacterDetailsConfigurator.swift in Sources */,
 				A51379082B8F93ED008E839E /* main.swift in Sources */,
@@ -405,6 +428,7 @@
 				A5E236112B9229950057DB36 /* LocationDomainEntity.swift in Sources */,
 				A5E235E12B90DF3B0057DB36 /* CharactersListPresenter.swift in Sources */,
 				A5E235F22B90E7AD0057DB36 /* CharacterDetailsViewModel.swift in Sources */,
+				A5E236232B9260D20057DB36 /* CharactersListTableViewCell.swift in Sources */,
 				A5E235E52B90DF460057DB36 /* CharactersListRouter.swift in Sources */,
 				A5E235EC2B90E79A0057DB36 /* CharacterDetailsPresenter.swift in Sources */,
 				A5E235F02B90E7A60057DB36 /* CharacterDetailsRouter.swift in Sources */,
