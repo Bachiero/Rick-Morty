@@ -12,8 +12,11 @@ final class CharactersListTableViewCell: UITableViewCell {
     
     private let image: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit
         image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 16
         return image
     }()
     
@@ -48,6 +51,7 @@ final class CharactersListTableViewCell: UITableViewCell {
         stack.distribution = .fill
         stack.alignment = .fill
         stack.spacing = 16
+        stack.layer.cornerRadius = 16
         return stack
     }()
     
@@ -55,9 +59,8 @@ final class CharactersListTableViewCell: UITableViewCell {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
-        stack.distribution = .fill
-        stack.alignment = .fill
-        stack.spacing = 16
+        stack.distribution = .fillEqually
+        stack.alignment = .leading
         return stack
     }()
     
@@ -94,22 +97,37 @@ final class CharactersListTableViewCell: UITableViewCell {
             hStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 8),
             hStack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ]
-        NSLayoutConstraint.activate(hStackConstraints)
+       
+        let imageConstraints:  [NSLayoutConstraint] = [
+            image.heightAnchor.constraint(equalToConstant: 150),
+            image.widthAnchor.constraint(equalToConstant: 150)
+        ]
         
-        //FIXME: Fix constraints for image + texts. adjust alignment
+        NSLayoutConstraint.activate(hStackConstraints)
+        NSLayoutConstraint.activate(imageConstraints)
     }
     
     private func setupAppearence() {
+        backgroundColor = .clear
         contentView.backgroundColor = .clear
+        hStack.backgroundColor = .systemGreen
+        vStack.backgroundColor = .clear
         self.selectionStyle = .none
         
     }
     
     public func configure(with model: CharactersListTableViewCellModel) {
-        //FIXME: add texts to values. (name - name, status - status, type - type)
         image.image = model.image
-        characterName.text = model.characterName
-        characterStatus.text = model.status
-        characterType.text = model.type
+        
+        characterName.text = "Name: \(model.characterName)"
+        characterName.isHidden = model.characterName.isEmpty
+        
+        characterStatus.text = "Status: \(model.status)"
+        characterStatus.isHidden = model.status.isEmpty
+        
+        characterType.text = "Type: \(model.type)"
+        characterType.isHidden = model.type.isEmpty
     }
+    
+ 
 }

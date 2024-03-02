@@ -87,5 +87,4 @@ struct CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
             )
         }
     }
-    
 }

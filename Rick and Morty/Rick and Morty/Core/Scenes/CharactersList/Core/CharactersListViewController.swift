@@ -36,6 +36,7 @@ final class CharactersListViewController: UIViewController {
         let table = UITableView()
         table.delegate = self
         table.dataSource = self
+        table.separatorStyle = .none
         table.translatesAutoresizingMaskIntoConstraints = false
         table.refreshControl = UIRefreshControl()
         table.refreshControl?.addTarget(self, action: #selector(tableViewDidRefresh), for: .valueChanged)
@@ -47,7 +48,7 @@ final class CharactersListViewController: UIViewController {
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationItem.title = "Characters"
         setupUI()
         presenter.fetchCharacters(searchKeyword: "")
     }
@@ -67,17 +68,17 @@ final class CharactersListViewController: UIViewController {
     private func setupLayout() {
         
         let tableViewConstraints: [NSLayoutConstraint] = [
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(tableViewConstraints)
     }
     
     private func setupAppearence() {
-        view.backgroundColor = .systemMint
-        tableView.backgroundColor = .systemGray
+        view.backgroundColor = .systemGray4
+        tableView.backgroundColor = .clear
     }
     
     //MARK: -
