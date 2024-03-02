@@ -19,11 +19,15 @@ final class CharacterDetailsViewController: UIViewController {
     var presenter: CharacterDetailsPresenter!
     
     
+    
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Character Details"
         setupUI()
+        
+        presenter.viewDidLoad()
 
     }
     

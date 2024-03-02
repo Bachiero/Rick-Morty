@@ -7,7 +7,7 @@
 
 import Foundation
 
-typealias CharactersListGatewayCompletion = (Result<CharacterEntity, Error>) -> Void
+typealias CharactersListGatewayCompletion = (Result<CharactersListEntity, Error>) -> Void
 
 protocol CharactersListGateway {
     func getCharactersList(with urlRequest: URLRequest, completion: @escaping CharactersListGatewayCompletion)
@@ -23,7 +23,7 @@ struct CharactersListGatewayImpl: CharactersListGateway {
             }
             else if let data = data {
                 do {
-                    let result = try JSONDecoder().decode(CharacterEntity.self, from: data)
+                    let result = try JSONDecoder().decode(CharactersListEntity.self, from: data)
                     completion(.success(result))
                 }
                 catch {

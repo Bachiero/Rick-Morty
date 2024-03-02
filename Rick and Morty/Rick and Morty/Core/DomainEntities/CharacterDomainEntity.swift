@@ -17,7 +17,7 @@ class CharacterDomainEntity {
     let origin: Origin
     let location: Location
     var image: UIImage
-    var imageUrl: String
+    let imageUrl: String
     let episode: [String]
     let url: String
     let created: String

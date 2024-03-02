@@ -47,7 +47,7 @@ class CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
 }
 
 //MARK: - Private methods
-extension CharactersListUseCaseImpl {
+extension CharactersListUseCaseImpl: FetchImageAccessible {
     
     private func getCharacters(with urlRequest: URLRequest, completion: @escaping CharactersListUseCaseCompletion) {
         gateway.getCharactersList(with: urlRequest) {[weak self] response in
@@ -55,14 +55,14 @@ extension CharactersListUseCaseImpl {
             case .success(let entity):
                 let domainEntity = self?.convertApiEntityToDomainEntity(from: entity) ?? []
                 self?.nextPageUrl = entity.info.next
-                self?.fetchChatracterImages(from: domainEntity, completion: completion)
+                self?.fetchCharacterImages(from: domainEntity, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
         }
     }
     
-    private func fetchChatracterImages(from entities: [CharacterDomainEntity],
+    private func fetchCharacterImages(from entities: [CharacterDomainEntity],
                          completion: @escaping CharactersListUseCaseCompletion) {
         
         entities.forEach { item in
@@ -86,18 +86,9 @@ extension CharactersListUseCaseImpl {
         }
     }
     
-    private func fetchImage(from url: URL, completion: @escaping (Result<UIImage, Error>) ->Void ) {
-        let task = URLSession.shared.dataTask(with: url) { data,_,_ in
-            guard let data = data else { return }
-            DispatchQueue.main.async {
-                let image = UIImage(data: data)?.withRenderingMode(.alwaysOriginal) ?? UIImage()
-                completion(.success(image))
-            }
-        }
-        task.resume()
-    }
+   
     
-    private func convertApiEntityToDomainEntity(from entity: CharacterEntity) -> [CharacterDomainEntity] {
+    private func convertApiEntityToDomainEntity(from entity: CharactersListEntity) -> [CharacterDomainEntity] {
         entity.results.compactMap { character in
             return CharacterDomainEntity(
                 id: character.id,
