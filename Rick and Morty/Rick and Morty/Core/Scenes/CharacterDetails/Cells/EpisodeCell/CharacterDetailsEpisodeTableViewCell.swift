@@ -41,7 +41,7 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell {
         
     }
     
-    public func configure(with model: CharactersListTableViewCellModel) {
+    public func configure(with model: CharacterDetailsEpisodeTableViewCellModel) {
         
     }
 }

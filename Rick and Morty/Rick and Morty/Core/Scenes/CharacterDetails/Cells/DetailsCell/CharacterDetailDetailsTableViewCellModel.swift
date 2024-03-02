@@ -7,6 +7,7 @@
 
 import Foundation
 
-struct CharacterDetailDetailsTableViewCellModel {
-    
+struct CharacterDetailDetailsTableViewCellModel: TableViewRowViewModelable {
+    let dequeueID: String = CharacterDetailDetailsTableViewCell.identifier
+    let details: [String]
 }

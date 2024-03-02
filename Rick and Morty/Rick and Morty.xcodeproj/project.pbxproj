@@ -51,6 +51,7 @@
 		A5E236492B93CB060057DB36 /* CharacterDetailImageTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E236482B93CB060057DB36 /* CharacterDetailImageTableViewCellModel.swift */; };
 		A5E2364B2B93CB130057DB36 /* CharacterDetailDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E2364A2B93CB130057DB36 /* CharacterDetailDetailsTableViewCell.swift */; };
 		A5E2364D2B93CB250057DB36 /* CharacterDetailDetailsTableViewCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E2364C2B93CB250057DB36 /* CharacterDetailDetailsTableViewCellModel.swift */; };
+		A5E2364F2B93DF730057DB36 /* TableViewDequeueable.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5E2364E2B93DF730057DB36 /* TableViewDequeueable.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		A5E236482B93CB060057DB36 /* CharacterDetailImageTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailImageTableViewCellModel.swift; sourceTree = "<group>"; };
 		A5E2364A2B93CB130057DB36 /* CharacterDetailDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		A5E2364C2B93CB250057DB36 /* CharacterDetailDetailsTableViewCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterDetailDetailsTableViewCellModel.swift; sourceTree = "<group>"; };
+		A5E2364E2B93DF730057DB36 /* TableViewDequeueable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewDequeueable.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -309,6 +311,7 @@
 			children = (
 				A5E2361D2B92320A0057DB36 /* UrlRequestFormattable.swift */,
 				A5E236382B939A230057DB36 /* FetchImageAccessible.swift */,
+				A5E2364E2B93DF730057DB36 /* TableViewDequeueable.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -352,9 +355,9 @@
 		A5E2363E2B93C98E0057DB36 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				A5E236452B93CAD20057DB36 /* EpisodeCell */,
 				A5E236432B93CA600057DB36 /* ImageCell */,
 				A5E236442B93CA740057DB36 /* DetailsCell */,
+				A5E236452B93CAD20057DB36 /* EpisodeCell */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -521,6 +524,7 @@
 				A5E235FA2B90EDF10057DB36 /* CharactersListEntity.swift in Sources */,
 				A5E236282B937B9F0057DB36 /* ErrorMessageView.swift in Sources */,
 				A5E236422B93C9BF0057DB36 /* CharacterDetailsEpisodeTableViewCellModel.swift in Sources */,
+				A5E2364F2B93DF730057DB36 /* TableViewDequeueable.swift in Sources */,
 				A51378BD2B8F8DCE008E839E /* AppDelegate.swift in Sources */,
 				A5E236012B9115150057DB36 /* Request.swift in Sources */,
 				A5E235FE2B90EDFE0057DB36 /* LocationEntity.swift in Sources */,

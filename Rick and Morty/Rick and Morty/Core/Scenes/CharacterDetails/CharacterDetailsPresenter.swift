@@ -10,8 +10,9 @@ import UIKit.UIImage
 protocol CharacterDetailsPresenter {
     func viewDidLoad()
     func getNumberOfRows() -> Int
-    func didSelectEpisode(at index: Int)
-    func getTableViewCellModel(for row: Int) -> CharactersListTableViewCellModel
+    func didSelectRow(at index: Int)
+    func dequeueID(row: Int) -> String
+    func configure(cell: TableViewDequeueable, row: Int)
 }
 
 final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
@@ -19,6 +20,7 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     private let router: CharacterDetailsRouter
     private let characterId: Int
     private let characterDetailsUseCase: CharacterDetailsUseCase
+    private var dataSource: [TableViewRowViewModelable] = []
     
     init(view: CharacterDetailsView,
          router: CharacterDetailsRouter,
@@ -36,15 +38,23 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     }
     
     func getNumberOfRows() -> Int {
-        1
+        dataSource.count
     }
     
-    func didSelectEpisode(at index: Int) {
+    func didSelectRow(at index: Int) {
         
     }
     
-    func getTableViewCellModel(for row: Int) -> CharactersListTableViewCellModel {
-        CharactersListTableViewCellModel(id: 1, image: UIImage(), characterName: "ads", status: "asd", type: "asd")
+    func getDataSource() -> [TableViewRowViewModelable] {
+        dataSource
+    }
+    
+    func dequeueID(row: Int) -> String {
+        dataSource[row].dequeueID
+    }
+    
+    func configure(cell: TableViewDequeueable, row: Int) {
+        cell.configure(viewModel: dataSource[row])
     }
     
     private func fetchCharacterDetails(with id: Int) {
@@ -54,15 +64,20 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
         characterDetailsUseCase.getCharacterDetails(with: request) { [weak self] response in
             switch response {
             case .success(let entity):
-                self?.view.setupImage(entity.image)
-                if let details = self?.getDetailsTexts(from: entity) {
-                    self?.view.setupDetailsStack(with: details)
-                }
+                self?.createDataSource(with: entity)
             case .failure(let error):
                 print(error.localizedDescription)
             }
+            self?.view.reloadTableView()
             self?.view.stopLoader()
         }
+    }
+    
+    private func createDataSource(with entity: CharacterDomainEntity) {
+        self.dataSource = [
+            CharacterDetailImageTableViewCellModel(image: entity.image),
+            CharacterDetailDetailsTableViewCellModel(details: getDetailsTexts(from: entity))
+        ]
     }
     
     private func getDetailsTexts(from entity: CharacterDomainEntity) -> [String] {

@@ -7,9 +7,19 @@
 
 import UIKit
 
-final class CharacterDetailImageTableViewCell: UITableViewCell {
+final class CharacterDetailImageTableViewCell: UITableViewCell, TableViewDequeueable {
+    
     static let identifier = String(describing: CharacterDetailImageTableViewCell.self)
     
+    private let characterImage: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFit
+        image.clipsToBounds = true
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 16
+        return image
+    }()
    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,21 +38,34 @@ final class CharacterDetailImageTableViewCell: UITableViewCell {
     }
     
     private func setupHierarchy() {
-      
+        contentView.addSubview(characterImage)
     }
     
     private func setupLayout() {
-    
+        let contentViewConstraints: [NSLayoutConstraint] = [
+            contentView.heightAnchor.constraint(equalToConstant: 266)
+        ]
+        
+        let characterImageConstraints: [NSLayoutConstraint] = [
+            characterImage.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
+            characterImage.heightAnchor.constraint(equalToConstant: 250),
+            characterImage.widthAnchor.constraint(equalToConstant: 250),
+            characterImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+        ]
+        
+        NSLayoutConstraint.activate(contentViewConstraints)
+        NSLayoutConstraint.activate(characterImageConstraints)
+        
     }
     
     private func setupAppearence() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         self.selectionStyle = .none
-        
     }
     
-    public func configure(with model: CharacterDetailImageTableViewCellModel) {
-        
+    func configure(viewModel: TableViewRowViewModelable) {
+        guard let model = viewModel as? CharacterDetailImageTableViewCellModel else { return }
+        characterImage.image = model.image
     }
 }

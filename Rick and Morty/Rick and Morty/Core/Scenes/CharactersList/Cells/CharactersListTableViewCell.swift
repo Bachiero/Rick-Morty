@@ -119,7 +119,7 @@ final class CharactersListTableViewCell: UITableViewCell {
         
     }
     
-    public func configure(with model: CharactersListTableViewCellModel) {
+    func configure(with model: CharactersListTableViewCellModel) {
         image.image = model.image
         
         characterName.text = "Name: \(model.characterName)"

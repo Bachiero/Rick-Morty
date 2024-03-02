@@ -5,8 +5,9 @@
 //  Created by Bachuki Bitsadze on 03.03.24.
 //
 
-import Foundation
+import UIKit.UIImage
 
-struct CharacterDetailImageTableViewCellModel {
-    
+struct CharacterDetailImageTableViewCellModel: TableViewRowViewModelable {
+    let dequeueID: String = CharacterDetailImageTableViewCell.identifier
+    let image: UIImage
 }
