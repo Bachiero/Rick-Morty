@@ -11,12 +11,15 @@ typealias CharactersListUseCaseCompletion = (Result<[CharacterDomainEntity],Erro
 
 protocol CharactersListUseCase {
     func getCharactersList(with request: Request, completion: @escaping CharactersListUseCaseCompletion)
+    func fetchNextPage(completion: @escaping CharactersListUseCaseCompletion)
 }
 
-struct CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
+class CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
     private let gateway: CharactersListGateway
     private let dispatchGroup = DispatchGroup()
-    
+    private var domainEntities: [CharacterDomainEntity] = []
+    private var nextPageUrl: String?
+
     init(gateway: CharactersListGateway) {
         self.gateway = gateway
     }
@@ -27,11 +30,31 @@ struct CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
             completion(.failure(NetworkError.failedToCreateRequest))
             return
         }
-        gateway.getCharactersList(with: urlRequest) { response in
+        getCharacters(with: urlRequest, completion: completion)
+    }
+    
+    func fetchNextPage(completion: @escaping CharactersListUseCaseCompletion) {
+        guard let nextPageUrl,
+              let url = URL(string: nextPageUrl) else {
+            completion(.failure(NetworkError.failedToCreateRequest))
+            return
+        }
+        let nextPageUrlRequest =  URLRequest(url: url)
+        
+        getCharacters(with: nextPageUrlRequest, completion: completion)
+    }
+}
+
+//MARK: - Private methods
+extension CharactersListUseCaseImpl {
+    
+    private func getCharacters(with urlRequest: URLRequest, completion: @escaping CharactersListUseCaseCompletion) {
+        gateway.getCharactersList(with: urlRequest) {[weak self] response in
             switch response {
             case .success(let entity):
-                let domainEntity = convertApiEntityToDomainEntity(from: entity)
-                fetchChatracterImages(from: domainEntity, completion: completion)
+                let domainEntity = self?.convertApiEntityToDomainEntity(from: entity) ?? []
+                self?.nextPageUrl = entity.info.next
+                self?.fetchChatracterImages(from: domainEntity, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }
@@ -44,16 +67,21 @@ struct CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
         entities.forEach { item in
             if let url = URL(string: item.imageUrl) {
                 dispatchGroup.enter()
-                fetchImage(from: url) { result in
+                fetchImage(from: url) {[weak self] result in
                     if case .success(let image) = result {
                         item.image = image
-                        dispatchGroup.leave()
+                        self?.dispatchGroup.leave()
                     }
                 }
             }
         }
-        dispatchGroup.notify(qos: .default, queue: .main) {
-            completion(.success(entities))
+        dispatchGroup.notify(qos: .default, queue: .main) { [weak self] in
+            guard let self else {
+                completion(.failure(NetworkError.failedToGetData))
+                return
+            }
+            domainEntities = getUpdatedEntities(with: entities, update: nextPageUrl != nil)
+            completion(.success(domainEntities))
         }
     }
     
@@ -86,5 +114,9 @@ struct CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
                 created: character.created
             )
         }
+    }
+    
+    private func getUpdatedEntities(with data: [CharacterDomainEntity], update: Bool) -> [CharacterDomainEntity] {
+        return update ? domainEntities + data : data
     }
 }

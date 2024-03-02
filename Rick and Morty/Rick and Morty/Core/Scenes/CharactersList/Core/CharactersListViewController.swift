@@ -9,6 +9,8 @@ import UIKit
 
 protocol CharactersListView: AnyObject {
     func reloadTableView()
+    func startLoader()
+    func stopLoader()
 }
 
 
@@ -44,6 +46,14 @@ final class CharactersListViewController: UIViewController {
         return table
     }()
     
+    private let loaderIndicator: UIActivityIndicatorView = {
+        let loader = UIActivityIndicatorView(style: .large)
+        loader.translatesAutoresizingMaskIntoConstraints = false
+        loader.hidesWhenStopped = true
+        loader.color = .systemOrange
+        return loader
+    }()
+    
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
@@ -63,6 +73,7 @@ final class CharactersListViewController: UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(tableView)
+        view.addSubview(loaderIndicator)
     }
     
     private func setupLayout() {
@@ -74,6 +85,15 @@ final class CharactersListViewController: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(tableViewConstraints)
+        
+        let loaderConstraints: [NSLayoutConstraint] = [
+            loaderIndicator.heightAnchor.constraint(equalToConstant: 60),
+            loaderIndicator.widthAnchor.constraint(equalToConstant: 60),
+            loaderIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loaderIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(tableViewConstraints)
+        NSLayoutConstraint.activate(loaderConstraints)
     }
     
     private func setupAppearence() {
@@ -100,6 +120,16 @@ extension CharactersListViewController: CharactersListView {
         }
     }
     
+    func startLoader() {
+        DispatchQueue.main.async { [weak self] in
+            self?.loaderIndicator.startAnimating()
+        }
+    }
+    
+    func stopLoader() {
+        loaderIndicator.stopAnimating()
+    }
+    
 }
 
 //MARK: - TableView's delegate
@@ -110,6 +140,16 @@ extension CharactersListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         UITableView.automaticDimension
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollViewDidReachEnd(scrollView: scrollView) {
+            presenter.didScrollToBottom()
+        }
+    }
+
+    private func scrollViewDidReachEnd(scrollView: UIScrollView) -> Bool {
+        return scrollView.contentOffset.y > scrollView.contentSize.height - 100 - scrollView.bounds.size.height
     }
 }
 

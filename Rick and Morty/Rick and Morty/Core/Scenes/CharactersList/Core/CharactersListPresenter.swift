@@ -12,6 +12,7 @@ protocol CharactersListPresenter {
     func fetchCharacters(searchKeyword: String?)
     func getNumberOfRows() -> Int
     func getTableViewCellModel(for row: Int) -> CharactersListTableViewCellModel
+    func didScrollToBottom()
 }
 
 final class CharactersListPresenterImpl: CharactersListPresenter {
@@ -43,15 +44,32 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
     func fetchCharacters(searchKeyword: String? = nil) {
         let request = Request(endpoint: .character)
         
+        view.startLoader()
         charactersListUseCase.getCharactersList(with: request) { [weak self] response in
             switch response {
             case .success(let entities):
                 self?.createDataSource(from: entities)
-                self?.view.reloadTableView()
             case .failure(let error):
                 print(error.localizedDescription)
                 //FIXME: show error. add some banner
             }
+            self?.view.reloadTableView()
+            self?.view.stopLoader()
+        }
+    }
+    
+    func didScrollToBottom() {
+        view.startLoader()
+        charactersListUseCase.fetchNextPage { [weak self] response in
+            switch response {
+            case .success(let entities):
+                self?.createDataSource(from: entities, update: true)
+            case .failure(let error):
+                print(error.localizedDescription)
+                //FIXME: show error. add some banner
+            }
+            self?.view.reloadTableView()
+            self?.view.stopLoader()
         }
     }
     
@@ -66,7 +84,8 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
         }
     }
     
-    private func createDataSource(from entities: [CharacterDomainEntity]) {
-        self.dataSource = self.convertEntitiesToModels(from: entities)
+    private func createDataSource(from entities: [CharacterDomainEntity], update: Bool = false) {
+       dataSource = convertEntitiesToModels(from: entities)
+
     }
 }
