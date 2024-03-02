@@ -5,9 +5,9 @@
 //  Created by Bachuki Bitsadze on 01.03.24.
 //
 
-import Foundation
+import UIKit.UIImage
 
-struct CharacterDomainEntity: Codable {
+class CharacterDomainEntity {
     let id: Int
     let name: String
     let status: CharacterStatus
@@ -16,30 +16,61 @@ struct CharacterDomainEntity: Codable {
     let gender: CharacterGender
     let origin: Origin
     let location: Location
-    let image: String
+    var image: UIImage
+    var imageUrl: String
     let episode: [String]
     let url: String
     let created: String
     
-    enum CharacterStatus: String, Codable {
+    init(
+        id: Int,
+        name: String,
+        status: CharacterStatus,
+        species: String,
+        type: String,
+        gender: CharacterGender,
+        origin: Origin,
+        location: Location,
+        image: UIImage,
+        imageUrl: String,
+        episode: [String],
+        url: String,
+        created: String
+    ) {
+        self.id = id
+        self.name = name
+        self.status = status
+        self.species = species
+        self.type = type
+        self.gender = gender
+        self.origin = origin
+        self.location = location
+        self.image = image
+        self.imageUrl = imageUrl
+        self.episode = episode
+        self.url = url
+        self.created = created
+    }
+    
+    enum CharacterStatus: String {
         case alive = "Alive"
         case dead = "Dead"
         case unknown = "unknown"
     }
     
-    enum CharacterGender: String, Codable {
+    enum CharacterGender: String{
         case male = "Male"
         case female = "Female"
         case genderless = "Genderless"
         case unknown = "unknown"
     }
     
-    struct Origin: Codable {
+    struct Origin {
         let name: String
         let url: String
     }
     
-    struct Location: Codable {
+    struct Location {
         let name: String
         let url: String
     }

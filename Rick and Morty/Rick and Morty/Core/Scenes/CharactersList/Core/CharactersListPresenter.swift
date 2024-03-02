@@ -58,7 +58,7 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
     private func convertEntitiesToModels(from entities: [CharacterDomainEntity]) -> [CharactersListTableViewCellModel] {
         entities.map { entity in
             CharactersListTableViewCellModel(
-                image: UIImage(),
+                image: entity.image,
                 characterName: entity.name,
                 status: entity.status.rawValue,
                 type: entity.type
@@ -69,5 +69,4 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
     private func createDataSource(from entities: [CharacterDomainEntity]) {
         self.dataSource = self.convertEntitiesToModels(from: entities)
     }
-    
 }

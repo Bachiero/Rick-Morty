@@ -8,5 +8,5 @@
 import UIKit
 
 struct CharactersListViewModel {
-    let screenTitle: String
+   
 }
