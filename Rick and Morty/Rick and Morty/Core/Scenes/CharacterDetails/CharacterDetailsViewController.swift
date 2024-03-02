@@ -15,4 +15,41 @@ protocol CharacterDetailsView: AnyObject {
 ///  Here we show more iformation about the character, related episodes and other characters in those episodes.
 final class CharacterDetailsViewController: UIViewController {
     
+    //MARK: Properties
+    var presenter: CharacterDetailsPresenter!
+    
+    
+    //MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationItem.title = "Character Details"
+        setupUI()
+
+    }
+    
+    //MARK: - Setup UI
+    private func setupUI() {
+        setupHierarchy()
+        setupLayout()
+        setupAppearence()
+       
+    }
+    
+    private func setupHierarchy() {
+       
+    }
+    
+    private func setupLayout() {
+     
+        
+    }
+    
+    private func setupAppearence() {
+        view.backgroundColor = .systemGreen
+    }
+}
+
+//MARK: - View interface conformance
+extension CharacterDetailsViewController: CharacterDetailsView {
+    
 }
