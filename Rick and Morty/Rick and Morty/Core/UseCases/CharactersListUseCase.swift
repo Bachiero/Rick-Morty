@@ -30,13 +30,14 @@ class CharactersListUseCaseImpl: CharactersListUseCase, UrlRequestFormattable {
             completion(.failure(NetworkError.failedToCreateRequest))
             return
         }
+        domainEntities = [] ///in case when tableView is reloaded, domainEntities should be emptied to correctly refresh the tabel with initial setup
         getCharacters(with: urlRequest, completion: completion)
     }
     
     func fetchNextPage(completion: @escaping CharactersListUseCaseCompletion) {
         guard let nextPageUrl,
               let url = URL(string: nextPageUrl) else {
-            completion(.failure(NetworkError.failedToCreateRequest))
+            completion(.failure(NetworkError.noMoreData))
             return
         }
         let nextPageUrlRequest =  URLRequest(url: url)

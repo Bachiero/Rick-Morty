@@ -42,7 +42,10 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
     }
     
     func fetchCharacters(searchKeyword: String? = nil) {
-        let request = Request(endpoint: .character)
+        var request = Request(endpoint: .character)
+        if let searchKeyword = searchKeyword {
+            request = Request(endpoint: .character, queryParameters: [URLQueryItem(name: "name", value: searchKeyword)])
+        }
         
         view.startLoader()
         charactersListUseCase.getCharactersList(with: request) { [weak self] response in
@@ -50,8 +53,8 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
             case .success(let entities):
                 self?.createDataSource(from: entities)
             case .failure(let error):
-                print(error.localizedDescription)
-                //FIXME: show error. add some banner
+                self?.dataSource = []
+                self?.view.showErrorMessage(error.localizedDescription)
             }
             self?.view.reloadTableView()
             self?.view.stopLoader()
@@ -65,6 +68,7 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
             case .success(let entities):
                 self?.createDataSource(from: entities, update: true)
             case .failure(let error):
+                self?.view.showErrorMessage(error.localizedDescription)
                 print(error.localizedDescription)
                 //FIXME: show error. add some banner
             }
@@ -86,6 +90,7 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
     
     private func createDataSource(from entities: [CharacterDomainEntity], update: Bool = false) {
        dataSource = convertEntitiesToModels(from: entities)
-
     }
+    
+    
 }

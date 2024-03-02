@@ -11,14 +11,16 @@ protocol CharactersListView: AnyObject {
     func reloadTableView()
     func startLoader()
     func stopLoader()
+    func showErrorMessage(_ text: String)
 }
-
 
 /// Controller to show the list of characters
 /// Including the search and filter to find the Schwifty
 final class CharactersListViewController: UIViewController {
     //MARK: Properties
     var presenter: CharactersListPresenter!
+    
+    private var errorTimer: Timer?
     
     private let screenTitle: UILabel = {
         let label = UILabel()
@@ -31,6 +33,7 @@ final class CharactersListViewController: UIViewController {
         bar.delegate = self
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.showsCancelButton = true
+        bar.searchBarStyle = .minimal
         return bar
     }()
     
@@ -41,6 +44,7 @@ final class CharactersListViewController: UIViewController {
         table.separatorStyle = .none
         table.translatesAutoresizingMaskIntoConstraints = false
         table.refreshControl = UIRefreshControl()
+        table.refreshControl?.tintColor = .systemOrange
         table.refreshControl?.addTarget(self, action: #selector(tableViewDidRefresh), for: .valueChanged)
         table.register(CharactersListTableViewCell.self, forCellReuseIdentifier: CharactersListTableViewCell.identifier)
         return table
@@ -52,6 +56,12 @@ final class CharactersListViewController: UIViewController {
         loader.hidesWhenStopped = true
         loader.color = .systemOrange
         return loader
+    }()
+    
+    private let errorMessage: ErrorMessageView = {
+        let view = ErrorMessageView()
+        view.isHidden = true
+        return view
     }()
     
     
@@ -74,17 +84,24 @@ final class CharactersListViewController: UIViewController {
     private func setupHierarchy() {
         view.addSubview(tableView)
         view.addSubview(loaderIndicator)
+        view.addSubview(searchBar)
+        view.addSubview(errorMessage)
     }
     
     private func setupLayout() {
+        let searchBarConstraints: [NSLayoutConstraint] = [
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+            searchBar.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+        ]
+        
         
         let tableViewConstraints: [NSLayoutConstraint] = [
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 16),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 8),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -8),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
-        NSLayoutConstraint.activate(tableViewConstraints)
         
         let loaderConstraints: [NSLayoutConstraint] = [
             loaderIndicator.heightAnchor.constraint(equalToConstant: 60),
@@ -92,8 +109,18 @@ final class CharactersListViewController: UIViewController {
             loaderIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             loaderIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ]
+        
+        let errorMessageConstraints: [NSLayoutConstraint] = [
+            errorMessage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorMessage.centerYAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 50)
+        ]
+        
+        
         NSLayoutConstraint.activate(tableViewConstraints)
         NSLayoutConstraint.activate(loaderConstraints)
+        NSLayoutConstraint.activate(searchBarConstraints)
+        NSLayoutConstraint.activate(errorMessageConstraints)
+        
     }
     
     private func setupAppearence() {
@@ -101,13 +128,18 @@ final class CharactersListViewController: UIViewController {
         tableView.backgroundColor = .clear
     }
     
-    //MARK: -
+    //MARK: - Setup Components
     @objc func tableViewDidRefresh() {
-        //FIXME: handle tv refresh
-//        tableView.refreshControl?.endRefreshing()
-//        searchBar.searchTextField.text = nil
-//        presenter.fetchCharacters(for: nil)
-//        stopLoader()
+        tableView.refreshControl?.endRefreshing()
+        searchBar.searchTextField.text = nil
+        presenter.fetchCharacters(searchKeyword: nil)
+    }
+    
+    private func hideErrorMessage() {
+        DispatchQueue.main.async { [weak self] in
+            self?.errorMessage.isHidden = true
+            self?.errorTimer?.invalidate()
+        }
     }
     
 }
@@ -127,7 +159,19 @@ extension CharactersListViewController: CharactersListView {
     }
     
     func stopLoader() {
-        loaderIndicator.stopAnimating()
+        DispatchQueue.main.async { [weak self] in
+            self?.loaderIndicator.stopAnimating()
+        }       
+    }
+    
+    func showErrorMessage(_ text: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.errorMessage.configure(withMessage: text)
+            self?.errorMessage.isHidden = false
+            self?.errorTimer = .scheduledTimer(withTimeInterval: 3, repeats: false, block: { [weak self] _ in
+                self?.errorMessage.isHidden = true
+            })
+        }
     }
     
 }
@@ -166,22 +210,21 @@ extension CharactersListViewController: UITableViewDataSource {
 //MARK: - UISearchBarDelegate
 extension CharactersListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //FIXME: handle search
-//        presenter.fetchCharacters(for: searchBar.searchTextField.text)
+        presenter.fetchCharacters(searchKeyword: searchBar.searchTextField.text)
         searchBar.searchTextField.resignFirstResponder()
     }
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchText.count < 1 {
-            //FIXME: reset list
-//            presenter.fetchCharacters(for: nil)
+            presenter.fetchCharacters(searchKeyword: nil)
+            hideErrorMessage()
         }
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        //FIXME: handle cancel button
-//        presenter.fetchCharacters(for: searchBar.searchTextField.text)
         searchBar.searchTextField.resignFirstResponder()
         searchBar.searchTextField.text = ""
+        presenter.fetchCharacters(searchKeyword: searchBar.searchTextField.text)
+        hideErrorMessage()
     }
 }
