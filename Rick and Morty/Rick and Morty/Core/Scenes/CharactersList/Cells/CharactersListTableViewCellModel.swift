@@ -8,6 +8,7 @@
 import UIKit.UIImage
 
 struct CharactersListTableViewCellModel {
+    let id: Int
     let image: UIImage
     let characterName: String
     let status: String

@@ -13,6 +13,7 @@ protocol CharactersListPresenter {
     func getNumberOfRows() -> Int
     func getTableViewCellModel(for row: Int) -> CharactersListTableViewCellModel
     func didScrollToBottom()
+    func didSelectCharacter(at index: Int)
 }
 
 final class CharactersListPresenterImpl: CharactersListPresenter {
@@ -77,9 +78,14 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
         }
     }
     
+    func didSelectCharacter(at index: Int) {
+        router.routeToDetails(characterId: dataSource[index].id)
+    }
+    
     private func convertEntitiesToModels(from entities: [CharacterDomainEntity]) -> [CharactersListTableViewCellModel] {
         entities.map { entity in
             CharactersListTableViewCellModel(
+                id: entity.id,
                 image: entity.image,
                 characterName: entity.name,
                 status: entity.status.rawValue,
@@ -91,6 +97,4 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
     private func createDataSource(from entities: [CharacterDomainEntity], update: Bool = false) {
        dataSource = convertEntitiesToModels(from: entities)
     }
-    
-    
 }

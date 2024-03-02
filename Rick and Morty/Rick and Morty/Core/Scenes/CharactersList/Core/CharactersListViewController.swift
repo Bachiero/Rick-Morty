@@ -186,6 +186,10 @@ extension CharactersListViewController: UITableViewDelegate {
         UITableView.automaticDimension
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter.didSelectCharacter(at: indexPath.row)
+    }
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if scrollViewDidReachEnd(scrollView: scrollView) {
             presenter.didScrollToBottom()

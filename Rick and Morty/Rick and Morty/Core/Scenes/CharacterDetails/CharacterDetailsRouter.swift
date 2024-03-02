@@ -5,4 +5,17 @@
 //  Created by Bachuki Bitsadze on 29.02.24.
 //
 
-import Foundation
+import UIKit.UIViewController
+
+protocol CharacterDetailsRouter {
+
+}
+
+final class CharacterDetailsRouterImpl: CharacterDetailsRouter {
+    private unowned let controller: UIViewController
+    
+    init(controller: UIViewController) {
+        self.controller = controller
+    }
+
+}

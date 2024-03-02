@@ -8,7 +8,7 @@
 import UIKit.UIViewController
 
 protocol CharactersListRouter {
-    func routeToDetails()
+    func routeToDetails(characterId: Int)
 }
 
 final class CharactersListRouterImpl: CharactersListRouter {
@@ -18,7 +18,8 @@ final class CharactersListRouterImpl: CharactersListRouter {
         self.controller = controller
     }
     
-    func routeToDetails() {
-        
+    func routeToDetails(characterId: Int) {
+        let vc = CharacterDetailsConfigurator().configured(characterId: characterId)
+        controller.navigationController?.pushViewController(vc, animated: true)
     }
 }
