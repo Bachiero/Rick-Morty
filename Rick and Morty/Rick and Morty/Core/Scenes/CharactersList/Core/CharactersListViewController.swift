@@ -33,7 +33,8 @@ final class CharactersListViewController: UIViewController {
         bar.delegate = self
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.showsCancelButton = true
-        bar.searchBarStyle = .minimal
+        bar.layer.cornerRadius = 16
+        bar.placeholder = "Search..."
         return bar
     }()
     
@@ -90,11 +91,10 @@ final class CharactersListViewController: UIViewController {
     
     private func setupLayout() {
         let searchBarConstraints: [NSLayoutConstraint] = [
-            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             searchBar.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
             searchBar.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
         ]
-        
         
         let tableViewConstraints: [NSLayoutConstraint] = [
             tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 16),
@@ -115,24 +115,19 @@ final class CharactersListViewController: UIViewController {
             errorMessage.centerYAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 50)
         ]
         
-        
-        NSLayoutConstraint.activate(tableViewConstraints)
-        NSLayoutConstraint.activate(loaderConstraints)
-        NSLayoutConstraint.activate(searchBarConstraints)
-        NSLayoutConstraint.activate(errorMessageConstraints)
-        
+        let constraints = [tableViewConstraints, loaderConstraints, searchBarConstraints, errorMessageConstraints]
+        constraints.forEach { NSLayoutConstraint.activate($0)}
     }
     
     private func setupAppearence() {
-        view.backgroundColor = .systemGray4
+        view.backgroundColor = Colors.RickDomColorPalette.purpleGrey
+        searchBar.backgroundColor = Colors.RickDomColorPalette.regularGrey
+        searchBar.searchBarStyle = .minimal
+        searchBar.barTintColor = Colors.RickDomColorPalette.white
+        searchBar.searchTextField.textColor = Colors.RickDomColorPalette.white
         tableView.backgroundColor = .clear
-    }
-    
-    //MARK: - Setup Components
-    @objc func tableViewDidRefresh() {
-        tableView.refreshControl?.endRefreshing()
-        searchBar.searchTextField.text = nil
-        presenter.fetchCharacters(searchKeyword: nil)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
     }
     
     private func hideErrorMessage() {
@@ -142,6 +137,11 @@ final class CharactersListViewController: UIViewController {
         }
     }
     
+    @objc func tableViewDidRefresh() {
+        tableView.refreshControl?.endRefreshing()
+        searchBar.searchTextField.text = nil
+        presenter.fetchCharacters(searchKeyword: nil)
+    }
 }
 
 //MARK: - View interface conformance
@@ -170,6 +170,7 @@ extension CharactersListViewController: CharactersListView {
             self?.errorMessage.isHidden = false
             self?.errorTimer = .scheduledTimer(withTimeInterval: 3, repeats: false, block: { [weak self] _ in
                 self?.errorMessage.isHidden = true
+                self?.errorTimer?.invalidate()
             })
         }
     }

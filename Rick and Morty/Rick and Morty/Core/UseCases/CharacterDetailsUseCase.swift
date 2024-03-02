@@ -56,7 +56,7 @@ extension CharacterDetailsUseCaseImpl: FetchImageAccessible {
             gender: CharacterDomainEntity.CharacterGender(rawValue: entity.gender.rawValue) ?? .unknown,
             origin: CharacterDomainEntity.Origin(name: entity.origin.name, url: entity.origin.url),
             location: CharacterDomainEntity.Location(name: entity.location.name, url: entity.location.url),
-            image: UIImage(named: "evil_morty") ?? UIImage(),
+            image: UIImage(named: "image_placeholder") ?? UIImage(),
             imageUrl: entity.image,
             episode: entity.episode,
             url: entity.url,
@@ -75,8 +75,8 @@ extension CharacterDetailsUseCaseImpl: FetchImageAccessible {
                 if case .success(let image) = result {
                     entity.image = image
                 }
+                completion(.success(entity))
             }
         }
-        completion(.success(entity))
     }
 }

@@ -99,7 +99,7 @@ extension CharactersListUseCaseImpl: FetchImageAccessible {
                 gender: CharacterDomainEntity.CharacterGender(rawValue: character.gender.rawValue) ?? .unknown,
                 origin: CharacterDomainEntity.Origin(name: character.origin.name, url: character.origin.url),
                 location: CharacterDomainEntity.Location(name: character.location.name, url: character.location.url),
-                image: UIImage(named: "evil_morty") ?? UIImage(),
+                image: UIImage(named: "image_placeholder") ?? UIImage(),
                 imageUrl: character.image,
                 episode: character.episode,
                 url: character.url,

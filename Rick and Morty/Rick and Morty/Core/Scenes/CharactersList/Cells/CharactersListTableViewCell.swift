@@ -25,15 +25,17 @@ final class CharactersListTableViewCell: UITableViewCell {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .systemFont(ofSize: 18, weight: .medium)
         title.numberOfLines = 0
+        title.textColor = Colors.RickDomColorPalette.white
         return title
     }()
     
     private let characterStatus: UILabel = {
-        let author = UILabel()
-        author.translatesAutoresizingMaskIntoConstraints = false
-        author.font = .systemFont(ofSize: 14, weight: .regular)
-        author.numberOfLines = 0
-        return author
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.numberOfLines = 0
+        label.textColor = Colors.RickDomColorPalette.white
+        return label
     }()
     
     private let characterType: UILabel = {
@@ -41,6 +43,7 @@ final class CharactersListTableViewCell: UITableViewCell {
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = Colors.RickDomColorPalette.white
         return label
     }()
     
@@ -110,7 +113,7 @@ final class CharactersListTableViewCell: UITableViewCell {
     private func setupAppearence() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
-        hStack.backgroundColor = .systemGreen
+        hStack.backgroundColor = Colors.RickDomColorPalette.darkGrey
         vStack.backgroundColor = .clear
         self.selectionStyle = .none
         

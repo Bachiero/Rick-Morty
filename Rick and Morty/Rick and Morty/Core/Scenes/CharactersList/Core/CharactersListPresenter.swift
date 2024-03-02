@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import UIKit.UIImage
 
 protocol CharactersListPresenter {
     func fetchCharacters(searchKeyword: String?)
@@ -70,8 +69,6 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
                 self?.createDataSource(from: entities, update: true)
             case .failure(let error):
                 self?.view.showErrorMessage(error.localizedDescription)
-                print(error.localizedDescription)
-                //FIXME: show error. add some banner
             }
             self?.view.reloadTableView()
             self?.view.stopLoader()
