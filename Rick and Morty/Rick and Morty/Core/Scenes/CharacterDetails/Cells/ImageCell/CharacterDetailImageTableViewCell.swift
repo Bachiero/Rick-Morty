@@ -42,18 +42,15 @@ final class CharacterDetailImageTableViewCell: UITableViewCell, TableViewDequeue
     }
     
     private func setupLayout() {
-        let contentViewConstraints: [NSLayoutConstraint] = [
-            contentView.heightAnchor.constraint(equalToConstant: 266)
-        ]
         
         let characterImageConstraints: [NSLayoutConstraint] = [
             characterImage.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
             characterImage.heightAnchor.constraint(equalToConstant: 250),
             characterImage.widthAnchor.constraint(equalToConstant: 250),
-            characterImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
+            characterImage.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            characterImage.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
         ]
         
-        NSLayoutConstraint.activate(contentViewConstraints)
         NSLayoutConstraint.activate(characterImageConstraints)
         
     }

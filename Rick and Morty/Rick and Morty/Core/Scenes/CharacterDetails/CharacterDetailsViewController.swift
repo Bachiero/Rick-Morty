@@ -29,6 +29,7 @@ final class CharacterDetailsViewController: UIViewController {
         table.translatesAutoresizingMaskIntoConstraints = false
         table.register(CharacterDetailImageTableViewCell.self, forCellReuseIdentifier: CharacterDetailImageTableViewCell.identifier)
         table.register(CharacterDetailDetailsTableViewCell.self, forCellReuseIdentifier: CharacterDetailDetailsTableViewCell.identifier)
+        table.register(CharacterDetailsEpisodeTableViewCell.self, forCellReuseIdentifier: CharacterDetailsEpisodeTableViewCell.identifier)
         table.layer.cornerRadius = 16
         return table
     }()

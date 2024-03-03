@@ -42,7 +42,18 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     }
     
     func didSelectRow(at index: Int) {
-        
+        switch dataSource[index] {
+        case let viewModel as CharacterDetailsEpisodeTableViewCellModel:
+            print("DidTap Expand") //FIXME: Handle expanding here
+            /*
+             viewModel.isExpanded.toggle()
+             view.reloadTableView()
+             OR
+             use Delegation
+             */
+            
+        default: break
+        }
     }
     
     func getDataSource() -> [TableViewRowViewModelable] {
@@ -76,7 +87,23 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     private func createDataSource(with entity: CharacterDomainEntity) {
         self.dataSource = [
             CharacterDetailImageTableViewCellModel(image: entity.image),
-            CharacterDetailDetailsTableViewCellModel(details: getDetailsTexts(from: entity))
+            CharacterDetailDetailsTableViewCellModel(details: getDetailsTexts(from: entity)),
+            CharacterDetailsEpisodeTableViewCellModel(
+                episodeName: "Pilot",
+                episodeAirDate: "December 2, 2013",
+                characterImages: [entity.image,
+                                  entity.image,
+                                  entity.image,
+                                  entity.image]
+            ),
+            CharacterDetailsEpisodeTableViewCellModel(
+                episodeName: "Citadel",
+                episodeAirDate: "December 2, 2013",
+                characterImages: [entity.image,
+                                  entity.image,
+                                  entity.image,
+                                  entity.image]
+            )
         ]
     }
     
@@ -90,4 +117,5 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
         details.append("Location: \(entity.location.name)")
         return details
     }
+    
 }

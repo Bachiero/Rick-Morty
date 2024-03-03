@@ -16,7 +16,7 @@ final class CharacterDetailDetailsTableViewCell: UITableViewCell, TableViewDeque
         title.font = .systemFont(ofSize: 18, weight: .medium)
         title.numberOfLines = 0
         title.textColor = Colors.RickDomColorPalette.white
-        title.text = "Info"
+        title.text = "Info:"
         return title
     }()
     
@@ -27,10 +27,19 @@ final class CharacterDetailDetailsTableViewCell: UITableViewCell, TableViewDeque
         stack.distribution = .fillEqually
         stack.alignment = .leading
         stack.layer.cornerRadius = 16
-        stack.layoutMargins = UIEdgeInsets(top: .zero, left: 8, bottom: .zero, right: .zero)
+        stack.layoutMargins = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
         stack.isLayoutMarginsRelativeArrangement = true
         return stack
     }()
+    
+    private let wrapperView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.borderWidth = 1
+        view.layer.cornerRadius = 16
+        return view
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -48,24 +57,33 @@ final class CharacterDetailDetailsTableViewCell: UITableViewCell, TableViewDeque
     }
     
     private func setupHierarchy() {
-        contentView.addSubview(detailsTitle)
-        contentView.addSubview(detailsStack)
+        contentView.addSubview(wrapperView)
+        wrapperView.addSubview(detailsTitle)
+        wrapperView.addSubview(detailsStack)
     }
     
     private func setupLayout() {
+        let wrapperViewConstraints: [NSLayoutConstraint] = [
+            wrapperView.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 16),
+            wrapperView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            wrapperView.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor, constant: -8)
+        ]
+        
         let detailsTitleConstraints: [NSLayoutConstraint] = [
-            detailsTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
-            detailsTitle.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8)
+            detailsTitle.topAnchor.constraint(equalTo: wrapperView.topAnchor, constant: 8),
+            detailsTitle.leftAnchor.constraint(equalTo: wrapperView.leftAnchor, constant: 16)
         ]
        
         let detailsStackConstraints:  [NSLayoutConstraint] = [
-            detailsStack.topAnchor.constraint(equalTo: detailsTitle.bottomAnchor, constant: 8),
-            detailsStack.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
-            detailsStack.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8)
+            detailsStack.topAnchor.constraint(equalTo: detailsTitle.safeAreaLayoutGuide.bottomAnchor, constant: 8),
+            detailsStack.leftAnchor.constraint(equalTo: wrapperView.leftAnchor, constant: 8),
+            detailsStack.rightAnchor.constraint(equalTo: wrapperView.rightAnchor, constant: -8),
+            detailsStack.bottomAnchor.constraint(equalTo: wrapperView.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ]
         
         NSLayoutConstraint.activate(detailsTitleConstraints)
         NSLayoutConstraint.activate(detailsStackConstraints)
+        NSLayoutConstraint.activate(wrapperViewConstraints)
     }
     
     private func setupAppearence() {
@@ -73,6 +91,7 @@ final class CharacterDetailDetailsTableViewCell: UITableViewCell, TableViewDeque
         contentView.backgroundColor = .clear
         self.selectionStyle = .none
         detailsStack.backgroundColor = Colors.RickDomColorPalette.darkGrey
+        wrapperView.layer.borderColor = Colors.RickDomColorPalette.purpleGrey.cgColor
     }
     
     private func setupDetailsStack(with details: [String]) {
