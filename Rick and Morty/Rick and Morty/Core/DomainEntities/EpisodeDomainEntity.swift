@@ -16,6 +16,7 @@ class EpisodeDomainEntity {
     var characterImages: [UIImage]
     let url: String
     let created: String
+    var characterEntities: [CharacterDomainEntity]
     
     init(
         id: Int,
@@ -25,7 +26,8 @@ class EpisodeDomainEntity {
         characters: [String],
         characterImages: [UIImage],
         url: String,
-        created: String
+        created: String,
+        characterEntities:  [CharacterDomainEntity]
     ) {
         self.id = id
         self.name = name
@@ -35,5 +37,6 @@ class EpisodeDomainEntity {
         self.characterImages = characterImages
         self.url = url
         self.created = created
+        self.characterEntities = characterEntities
     }
 }

@@ -132,6 +132,6 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
         charactersCollectionView.configure(withModel: model.characterImages)
         charactersCollectionView.isHidden = !model.isExpanded
         charactersCollectionView.didSelectDelegate = model.didSelectImageDelegate
-        charactersCollectionView.accessibilityIdentifier = model.episodeName
+        charactersCollectionView.accessibilityIdentifier = String(model.id)
     }
 }

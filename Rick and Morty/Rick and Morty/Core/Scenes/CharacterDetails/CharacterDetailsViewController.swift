@@ -116,12 +116,14 @@ extension CharacterDetailsViewController: CharacterDetailsView {
     
     func startLoader() {
         DispatchQueue.main.async { [weak self] in
+            self?.view.isUserInteractionEnabled = false
             self?.loaderIndicator.startAnimating()
         }
     }
     
     func stopLoader() {
         DispatchQueue.main.async { [weak self] in
+            self?.view.isUserInteractionEnabled = true
             self?.loaderIndicator.stopAnimating()
         }
     }

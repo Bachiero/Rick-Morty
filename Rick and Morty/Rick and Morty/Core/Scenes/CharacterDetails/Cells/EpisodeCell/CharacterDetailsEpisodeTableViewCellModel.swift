@@ -9,6 +9,7 @@ import UIKit
 
 class CharacterDetailsEpisodeTableViewCellModel: TableViewRowViewModelable {
     let dequeueID: String = CharacterDetailsEpisodeTableViewCell.identifier
+    let id: Int
     let episodeName: String
     let episodeAirDate: String
     let characterImages: [UIImage]
@@ -16,12 +17,14 @@ class CharacterDetailsEpisodeTableViewCellModel: TableViewRowViewModelable {
     let didSelectImageDelegate: CharactersCollectionViewDelegate?
     
     init(
+        id: Int,
         episodeName: String,
         episodeAirDate: String,
         characterImages: [UIImage],
         isExpanded: Bool = false,
         didSelectImageDelegate: CharactersCollectionViewDelegate?
     ) {
+        self.id = id
         self.episodeName = episodeName
         self.episodeAirDate = episodeAirDate
         self.characterImages = characterImages

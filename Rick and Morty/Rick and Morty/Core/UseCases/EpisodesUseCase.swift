@@ -31,6 +31,7 @@ class EpisodesUseCaseImpl: EpisodesUseCase, UrlRequestFormattable {
             completion(.failure(NetworkError.failedToCreateRequest))
             return
         }
+        domainEntities = [] ///in case when navigated to new character, domainEntities should be emptied to correctly fetch new episodes
         getEpisodes(for: characterId, with: urlRequest, completion: completion)
     }
     
@@ -88,10 +89,13 @@ extension EpisodesUseCaseImpl: FetchImageAccessible {
                 characters: entity.characters,
                 characterImages: [],
                 url: entity.url,
-                created: entity.created
+                created: entity.created,
+                characterEntities: []
             )
         }
     }
+    
+    
     
     private func getUpdatedEntities(with data: [EpisodeDomainEntity], update: Bool) -> [EpisodeDomainEntity] {
         return update ? domainEntities + data : data
