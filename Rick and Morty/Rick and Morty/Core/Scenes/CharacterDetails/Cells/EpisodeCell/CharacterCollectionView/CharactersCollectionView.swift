@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol CharactersCollectionViewDelegate: AnyObject {
+    func didSelect(collectionView: UICollectionView, cellAt cellIndex: Int)
+}
+
 class CharactersCollectionView: UICollectionView {
     
     private typealias Dimensions = CharactersCollectionViewConstants.Dimensions
     
     private var model: [UIImage]?
+    
+    weak var didSelectDelegate: CharactersCollectionViewDelegate?
     
     private let layout: CharacterCollectionViewFlowLayout = {
         let layout = CharacterCollectionViewFlowLayout(cellWidth: Dimensions.collectionViewCellWidth)
@@ -86,6 +92,10 @@ extension CharactersCollectionView: UICollectionViewDataSource {
             return cell
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        didSelectDelegate?.didSelect(collectionView: self, cellAt: indexPath.row)
     }
     
 }

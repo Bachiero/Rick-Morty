@@ -9,8 +9,10 @@ import UIKit
 
 protocol CharacterDetailsView: AnyObject {
     func reloadTableView()
+    func reloadTableView(indexPath: IndexPath)
     func startLoader()
     func stopLoader()
+    func showErrorMessage(_ text: String)
 }
 
 ///  Controller for details of selected character.
@@ -19,8 +21,8 @@ final class CharacterDetailsViewController: UIViewController {
     
     //MARK: Properties
     var presenter: CharacterDetailsPresenter!
+    private var errorTimer: Timer?
     
-    //FIXME: Move character image and detailsStack to tableView cells and configure the page with tv only.
     private lazy var tableView: UITableView = {
         let table = UITableView()
         table.delegate = self
@@ -42,6 +44,12 @@ final class CharacterDetailsViewController: UIViewController {
         return loader
     }()
     
+    private let errorMessage: ErrorMessageView = {
+        let view = ErrorMessageView()
+        view.isHidden = true
+        return view
+    }()
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +57,10 @@ final class CharacterDetailsViewController: UIViewController {
         setupUI()
         
         presenter.viewDidLoad()
-
+    }
+    
+    deinit {
+        errorTimer?.invalidate()
     }
     
     //MARK: - Setup UI
@@ -57,7 +68,6 @@ final class CharacterDetailsViewController: UIViewController {
         setupHierarchy()
         setupLayout()
         setupAppearence()
-       
     }
     
     private func setupHierarchy() {
@@ -87,9 +97,6 @@ final class CharacterDetailsViewController: UIViewController {
         view.backgroundColor = Colors.RickDomColorPalette.purpleGrey
         tableView.backgroundColor = Colors.RickDomColorPalette.lightGrey
     }
-    
-    
-    
 }
 
 //MARK: - View interface conformance
@@ -98,6 +105,12 @@ extension CharacterDetailsViewController: CharacterDetailsView {
     func reloadTableView() {
         DispatchQueue.main.async { [weak self] in
             self?.tableView.reloadData()
+        }
+    }
+    
+    func reloadTableView(indexPath: IndexPath) {
+        DispatchQueue.main.async { [weak self] in
+            self?.tableView.reloadRows(at: [indexPath], with: .none)
         }
     }
     
@@ -110,6 +123,17 @@ extension CharacterDetailsViewController: CharacterDetailsView {
     func stopLoader() {
         DispatchQueue.main.async { [weak self] in
             self?.loaderIndicator.stopAnimating()
+        }
+    }
+    
+    func showErrorMessage(_ text: String) {
+        DispatchQueue.main.async { [weak self] in
+            self?.errorMessage.configure(withMessage: text)
+            self?.errorMessage.isHidden = false
+            self?.errorTimer = .scheduledTimer(withTimeInterval: 3, repeats: false, block: { [weak self] _ in
+                self?.errorMessage.isHidden = true
+                self?.errorTimer?.invalidate()
+            })
         }
     }
 }
@@ -130,9 +154,18 @@ extension CharacterDetailsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter.didSelectRow(at: indexPath.row)
+        presenter.didSelectRow(at: indexPath)
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if scrollViewDidReachEnd(scrollView: scrollView) {
+            presenter.didScrollToBottom()
+        }
     }
 
+    private func scrollViewDidReachEnd(scrollView: UIScrollView) -> Bool {
+        return scrollView.contentOffset.y > scrollView.contentSize.height - 100 - scrollView.bounds.size.height
+    }
 }
 
 //MARK: - TableView's dataSource

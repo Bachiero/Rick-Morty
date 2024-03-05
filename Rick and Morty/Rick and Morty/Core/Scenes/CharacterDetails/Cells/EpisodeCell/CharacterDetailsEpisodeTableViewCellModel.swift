@@ -7,23 +7,25 @@
 
 import UIKit
 
-//FIXME: Make struct in case if isExpanded is not usable. 
 class CharacterDetailsEpisodeTableViewCellModel: TableViewRowViewModelable {
     let dequeueID: String = CharacterDetailsEpisodeTableViewCell.identifier
     let episodeName: String
     let episodeAirDate: String
     let characterImages: [UIImage]
     var isExpanded: Bool
+    let didSelectImageDelegate: CharactersCollectionViewDelegate?
     
     init(
         episodeName: String,
         episodeAirDate: String,
         characterImages: [UIImage],
-        isExpanded: Bool = false
+        isExpanded: Bool = false,
+        didSelectImageDelegate: CharactersCollectionViewDelegate?
     ) {
         self.episodeName = episodeName
         self.episodeAirDate = episodeAirDate
         self.characterImages = characterImages
         self.isExpanded = isExpanded
+        self.didSelectImageDelegate = didSelectImageDelegate
     }
 }

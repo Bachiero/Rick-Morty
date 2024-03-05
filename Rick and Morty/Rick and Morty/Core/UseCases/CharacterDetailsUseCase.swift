@@ -12,9 +12,10 @@ typealias CharacterDetailsUseCaseCompletion = (Result<CharacterDomainEntity,Erro
 
 protocol CharacterDetailsUseCase {
     func getCharacterDetails(with request: Request, completion: @escaping CharacterDetailsUseCaseCompletion)
+    func getCharactersDetailsWithUrl(for characterUrl: String, completion: @escaping CharacterDetailsUseCaseCompletion)
 }
 
-class CharacterDetailsUseCaseImpl: CharacterDetailsUseCase, UrlRequestFormattable {
+struct CharacterDetailsUseCaseImpl: CharacterDetailsUseCase, UrlRequestFormattable {
     private let gateway: CharacterInfoGateway
     
     init(gateway: CharacterInfoGateway) {
@@ -28,18 +29,27 @@ class CharacterDetailsUseCaseImpl: CharacterDetailsUseCase, UrlRequestFormattabl
         }
         getCharacterInfo(with: urlRequest, completion: completion)
     }
+    
+    func getCharactersDetailsWithUrl(for characterUrl: String, completion: @escaping CharacterDetailsUseCaseCompletion) {
+        guard let url = URL(string: characterUrl)else {
+            completion(.failure(NetworkError.failedToCreateRequest))
+            return
+        }
+        let urlRequest = URLRequest(url: url)
+        getCharacterInfo(with: urlRequest, completion: completion)
+    }
 }
 
 //MARK: - Private methods
 extension CharacterDetailsUseCaseImpl: FetchImageAccessible {
     
     private func getCharacterInfo(with urlRequest: URLRequest, completion: @escaping CharacterDetailsUseCaseCompletion) {
-        gateway.getCharacterInfo(with: urlRequest) {[weak self] response in
+        gateway.getCharacterInfo(with: urlRequest) { response in
             
             switch response {
             case .success(let entity):
-                let domainEntity = self?.convertApiEntityToDomainEntity(from: entity)
-                self?.fetchCharacterImage(from: domainEntity, completion: completion)
+                let domainEntity = convertApiEntityToDomainEntity(from: entity)
+                fetchCharacterImage(from: domainEntity, completion: completion)
             case .failure(let error):
                 completion(.failure(error))
             }

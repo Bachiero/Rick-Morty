@@ -35,6 +35,10 @@ final class Request {
         let urlString = getCombinedStringUrl()
         return URL(string: urlString)
     }
+    
+    public func getUrlString() -> String {
+        return getCombinedStringUrl()
+    }
 }
 
 //MARK: - UrlString combining

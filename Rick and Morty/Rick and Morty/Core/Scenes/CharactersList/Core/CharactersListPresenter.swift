@@ -66,7 +66,7 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
         charactersListUseCase.fetchNextPage { [weak self] response in
             switch response {
             case .success(let entities):
-                self?.createDataSource(from: entities, update: true)
+                self?.createDataSource(from: entities)
             case .failure(let error):
                 self?.view.showErrorMessage(error.localizedDescription)
             }
@@ -91,7 +91,7 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
         }
     }
     
-    private func createDataSource(from entities: [CharacterDomainEntity], update: Bool = false) {
+    private func createDataSource(from entities: [CharacterDomainEntity]) {
        dataSource = convertEntitiesToModels(from: entities)
     }
 }

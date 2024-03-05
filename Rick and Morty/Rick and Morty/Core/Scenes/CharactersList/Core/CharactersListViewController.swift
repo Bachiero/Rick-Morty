@@ -74,6 +74,9 @@ final class CharactersListViewController: UIViewController {
         presenter.fetchCharacters(searchKeyword: "")
     }
     
+    deinit {
+        errorTimer?.invalidate()
+    }
     //MARK: - Setup UI
     private func setupUI() {
         setupHierarchy()

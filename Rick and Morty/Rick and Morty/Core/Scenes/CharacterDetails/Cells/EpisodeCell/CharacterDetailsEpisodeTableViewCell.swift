@@ -14,17 +14,17 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
     private let nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 18, weight: .medium)
-        label.numberOfLines = 0
-        label.textColor = Colors.RickDomColorPalette.white
+        label.font = .systemFont(ofSize: 12, weight: .medium)
+        label.numberOfLines = 2
+        label.textColor = Colors.RickDomColorPalette.darkGrey
         return label
     }()
     
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 18, weight: .medium)
+        label.font = .systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 0
-        label.textColor = Colors.RickDomColorPalette.white
+        label.textColor = Colors.RickDomColorPalette.darkGrey
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -54,6 +54,14 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
         return collectionView
     }()
     
+    private let separator: UIView = {
+        let separator = UIView()
+        separator.layer.borderWidth = 1
+        separator.backgroundColor = Colors.RickDomColorPalette.darkGrey
+        separator.translatesAutoresizingMaskIntoConstraints = false
+        return separator
+    }()
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -71,6 +79,7 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
     }
     
     private func setupHierarchy() {
+        contentView.addSubview(separator)
         contentView.addSubview(vStack)
         vStack.addArrangedSubview(episodeInfoView)
         vStack.addArrangedSubview(charactersCollectionView)
@@ -79,8 +88,14 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
     }
     
     private func setupLayout() {
+        let separatorConstraints: [NSLayoutConstraint] = [
+            separator.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor, constant: 1),
+            separator.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            separator.rightAnchor.constraint(equalTo: contentView.rightAnchor)
+        ]
+        
         let vStackConstraints: [NSLayoutConstraint] = [
-            vStack.topAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.topAnchor),
+            vStack.topAnchor.constraint(equalTo: separator.safeAreaLayoutGuide.bottomAnchor),
             vStack.leftAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.leftAnchor),
             vStack.rightAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.rightAnchor),
             vStack.bottomAnchor.constraint(equalTo: contentView.safeAreaLayoutGuide.bottomAnchor)
@@ -97,15 +112,15 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
             dateLabel.centerYAnchor.constraint(equalTo: episodeInfoView.centerYAnchor)
         ]
         
-        charactersCollectionView.heightAnchor.constraint(equalToConstant: 166).isActive = true
+        charactersCollectionView.heightAnchor.constraint(equalToConstant: 180).isActive = true
         episodeInfoView.heightAnchor.constraint(equalToConstant: 30).isActive = true
        
-        let constraints = [vStackConstraints, nameConstraints, dateConstraints]
+        let constraints = [separatorConstraints, vStackConstraints, nameConstraints, dateConstraints]
         constraints.forEach { NSLayoutConstraint.activate($0) }
     }
     
     private func setupAppearence() {
-        backgroundColor = .systemYellow
+        backgroundColor = Colors.RickDomColorPalette.white
         contentView.backgroundColor = .clear
         self.selectionStyle = .none
     }
@@ -116,5 +131,7 @@ final class CharacterDetailsEpisodeTableViewCell: UITableViewCell, TableViewDequ
         dateLabel.text = " \(model.episodeAirDate) ＞"
         charactersCollectionView.configure(withModel: model.characterImages)
         charactersCollectionView.isHidden = !model.isExpanded
+        charactersCollectionView.didSelectDelegate = model.didSelectImageDelegate
+        charactersCollectionView.accessibilityIdentifier = model.episodeName
     }
 }
