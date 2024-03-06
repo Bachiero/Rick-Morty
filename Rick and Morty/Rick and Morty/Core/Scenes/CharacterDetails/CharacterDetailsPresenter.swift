@@ -18,7 +18,6 @@ protocol CharacterDetailsPresenter {
 
 final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     private unowned let view: CharacterDetailsView
-    private let router: CharacterDetailsRouter
     private var characterId: Int
     private let characterDetailsUseCase: CharacterDetailsUseCase
     private let episodesUseCase: EpisodesUseCase
@@ -33,13 +32,11 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     }
     
     init(view: CharacterDetailsView,
-         router: CharacterDetailsRouter,
          characterDetailsUseCase: CharacterDetailsUseCase,
          episodesUseCase: EpisodesUseCase,
          characterId: Int
     ) {
         self.view = view
-        self.router = router
         self.characterId = characterId
         self.characterDetailsUseCase = characterDetailsUseCase
         self.episodesUseCase = episodesUseCase

@@ -10,7 +10,6 @@ import UIKit.UIViewController
 struct CharacterDetailsConfigurator {
     func configured(characterId: Int) -> UIViewController {
         let vc = CharacterDetailsViewController()
-        let router = CharacterDetailsRouterImpl(controller: vc)
         let characterDetailsGateway = CharacterInfoGatewayImpl()
         let characterDetailsUseCase = CharacterDetailsUseCaseImpl(
             gateway: characterDetailsGateway
@@ -23,7 +22,6 @@ struct CharacterDetailsConfigurator {
         
         vc.presenter = CharacterDetailsPresenterImpl(
             view: vc,
-            router: router,
             characterDetailsUseCase: characterDetailsUseCase,
             episodesUseCase: episodesUseCase,
             characterId: characterId

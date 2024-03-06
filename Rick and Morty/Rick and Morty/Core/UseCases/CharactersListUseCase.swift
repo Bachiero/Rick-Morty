@@ -86,8 +86,6 @@ extension CharactersListUseCaseImpl: FetchImageAccessible {
         }
     }
     
-   
-    
     private func convertApiEntityToDomainEntity(from entity: CharactersListEntity) -> [CharacterDomainEntity] {
         entity.results.compactMap { character in
             return CharacterDomainEntity(

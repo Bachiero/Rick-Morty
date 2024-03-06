@@ -9,7 +9,7 @@
 import UIKit.UIImage
 
 extension CharacterDomainEntity {
-    static var getTestEntity: CharacterDomainEntity {
+    static var getRickEntity: CharacterDomainEntity {
         CharacterDomainEntity(
             id: 1,
             name: "Rick",
@@ -22,7 +22,25 @@ extension CharacterDomainEntity {
             image: UIImage(),
             imageUrl: "",
             episode: [],
-            url: "",
+            url: "https://rickandmortyapi.com/api/character/1",
+            created: ""
+        )
+    }
+    
+    static var getMortyEntity: CharacterDomainEntity {
+        CharacterDomainEntity(
+            id: 2,
+            name: "Morty",
+            status: .alive,
+            species: "Human",
+            type: "",
+            gender: .male,
+            origin: Origin(name: "Earth", url: ""),
+            location: Location(name: "", url: ""),
+            image: UIImage(),
+            imageUrl: "",
+            episode: [],
+            url: "https://rickandmortyapi.com/api/character/2",
             created: ""
         )
     }
