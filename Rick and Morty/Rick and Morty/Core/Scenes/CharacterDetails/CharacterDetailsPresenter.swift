@@ -26,9 +26,8 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     private var episodes: [EpisodeDomainEntity] = []
     
     private lazy var serviceQueue = ServiceQueue { [weak self] in
-        guard let self = self else { return }
-        self.view?.stopLoader()
-        self.view?.reloadTableView()
+        self?.view?.stopLoader()
+        self?.view?.reloadTableView()
     }
     
     init(view: CharacterDetailsView,

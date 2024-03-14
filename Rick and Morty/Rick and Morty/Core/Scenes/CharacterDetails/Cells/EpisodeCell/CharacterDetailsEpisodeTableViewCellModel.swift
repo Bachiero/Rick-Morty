@@ -14,7 +14,7 @@ class CharacterDetailsEpisodeTableViewCellModel: TableViewRowViewModelable {
     let episodeAirDate: String
     let characterImages: [UIImage]
     var isExpanded: Bool
-    let didSelectImageDelegate: CharactersCollectionViewDelegate?
+    weak var didSelectImageDelegate: CharactersCollectionViewDelegate?
     
     init(
         id: Int,
