@@ -13,7 +13,8 @@ protocol FetchImageAccessible {
 
 extension FetchImageAccessible {
     func fetchImage(from url: URL, completion: @escaping (Result<UIImage, Error>) ->Void) {
-        let task = URLSession.shared.dataTask(with: url) { data,_,_ in
+        let session = URLSession.shared
+        let task = session.dataTask(with: url) { data,_,_ in
             guard let data = data else { return }
             DispatchQueue.main.async {
                 let image = UIImage(data: data)?.withRenderingMode(.alwaysOriginal) ?? UIImage()
@@ -21,5 +22,6 @@ extension FetchImageAccessible {
             }
         }
         task.resume()
+        session.invalidateAndCancel()
     }
 }

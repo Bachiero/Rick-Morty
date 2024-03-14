@@ -13,11 +13,13 @@ protocol EpisodesGateway {
     func getEpisodes(with urlRequest: URLRequest, completion: @escaping EpisodesGatewayCompletion)
 }
 
-struct EpisodesGatewayImpl: EpisodesGateway {
+class EpisodesGatewayImpl: EpisodesGateway {
+    
+    private var task = URLSession.shared
     
     func getEpisodes(with urlRequest: URLRequest, completion: @escaping EpisodesGatewayCompletion) {
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let task = task.dataTask(with: urlRequest) { data, response, error in
             if let _ = error {
                 completion(.failure(NetworkError.failedToGetData))
             }
@@ -32,6 +34,7 @@ struct EpisodesGatewayImpl: EpisodesGateway {
             }
         }
         task.resume()
+        self.task.invalidateAndCancel()
     }
 }
 

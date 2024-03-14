@@ -12,7 +12,7 @@ protocol CharactersListRouter {
 }
 
 final class CharactersListRouterImpl: CharactersListRouter {
-    private unowned let controller: UIViewController
+    private weak var controller: UIViewController?
     
     init(controller: UIViewController) {
         self.controller = controller
@@ -20,6 +20,6 @@ final class CharactersListRouterImpl: CharactersListRouter {
     
     func routeToDetails(characterId: Int) {
         let vc = CharacterDetailsConfigurator().configured(characterId: characterId)
-        controller.navigationController?.pushViewController(vc, animated: true)
+        controller?.navigationController?.pushViewController(vc, animated: true)
     }
 }

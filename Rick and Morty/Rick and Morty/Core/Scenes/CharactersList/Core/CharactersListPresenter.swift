@@ -17,7 +17,7 @@ protocol CharactersListPresenter {
 
 final class CharactersListPresenterImpl: CharactersListPresenter {
    
-    private unowned let view: CharactersListView
+    private weak var view: CharactersListView?
     private let router: CharactersListRouter
     
     private let charactersListUseCase: CharactersListUseCase
@@ -47,31 +47,32 @@ final class CharactersListPresenterImpl: CharactersListPresenter {
             request = Request(endpoint: .character, queryParameters: [URLQueryItem(name: "name", value: searchKeyword)])
         }
         
-        view.startLoader()
+        view?.startLoader()
         charactersListUseCase.getCharactersList(with: request) { [weak self] response in
             switch response {
             case .success(let entities):
                 self?.createDataSource(from: entities)
             case .failure(let error):
                 self?.dataSource = []
-                self?.view.showErrorMessage(error.localizedDescription)
+                self?.view?.showErrorMessage(error.localizedDescription)
             }
-            self?.view.reloadTableView()
-            self?.view.stopLoader()
+            self?.view?.reloadTableView()
+            self?.view?.stopLoader()
         }
     }
     
     func didScrollToBottom() {
-        view.startLoader()
+        view?.startLoader()
         charactersListUseCase.fetchNextPage { [weak self] response in
             switch response {
             case .success(let entities):
                 self?.createDataSource(from: entities)
             case .failure(let error):
-                self?.view.showErrorMessage(error.localizedDescription)
+                self?.view?.showErrorMessage(error.localizedDescription)
+                
             }
-            self?.view.reloadTableView()
-            self?.view.stopLoader()
+            self?.view?.reloadTableView()
+            self?.view?.stopLoader()
         }
     }
     

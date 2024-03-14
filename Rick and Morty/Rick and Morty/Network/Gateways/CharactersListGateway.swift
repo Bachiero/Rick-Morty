@@ -13,11 +13,13 @@ protocol CharactersListGateway {
     func getCharactersList(with urlRequest: URLRequest, completion: @escaping CharactersListGatewayCompletion)
 }
 
-struct CharactersListGatewayImpl: CharactersListGateway {
+class CharactersListGatewayImpl: CharactersListGateway {
+    
+    private var task = URLSession.shared
     
     func getCharactersList(with urlRequest: URLRequest, completion: @escaping CharactersListGatewayCompletion) {
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let task = task.dataTask(with: urlRequest) { data, response, error in
             if let _ = error {
                 completion(.failure(NetworkError.failedToGetData))
             }
@@ -31,6 +33,8 @@ struct CharactersListGatewayImpl: CharactersListGateway {
                 }
             }
         }
+        
         task.resume()
+        self.task.invalidateAndCancel()
     }
 }

@@ -17,7 +17,7 @@ protocol CharacterDetailsPresenter {
 }
 
 final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
-    private unowned let view: CharacterDetailsView
+    private weak var view: CharacterDetailsView?
     private var characterId: Int
     private let characterDetailsUseCase: CharacterDetailsUseCase
     private let episodesUseCase: EpisodesUseCase
@@ -27,8 +27,8 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     
     private lazy var serviceQueue = ServiceQueue { [weak self] in
         guard let self = self else { return }
-        self.view.stopLoader()
-        self.view.reloadTableView()
+        self.view?.stopLoader()
+        self.view?.reloadTableView()
     }
     
     init(view: CharacterDetailsView,
@@ -47,7 +47,7 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
     }
     
     func viewDidLoad() {
-        view.startLoader()
+        view?.startLoader()
         fetchCharacterDetails(with: characterId)
     }
     
@@ -59,7 +59,7 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
         switch dataSource[index.row] {
         case let viewModel as CharacterDetailsEpisodeTableViewCellModel:
             viewModel.isExpanded.toggle()
-            view.reloadTableView(indexPath: index)
+            view?.reloadTableView(indexPath: index)
         default: break
         }
     }
@@ -89,7 +89,7 @@ final class CharacterDetailsPresenterImpl: CharacterDetailsPresenter {
                     self?.createDataSource(with: entity, episodes: models)
                 }
             case .failure(let error):
-                self?.view.showErrorMessage(error.localizedDescription)
+                self?.view?.showErrorMessage(error.localizedDescription)
                
             }
             self?.serviceQueue.dequeue()
@@ -128,7 +128,7 @@ extension CharacterDetailsPresenterImpl {
                 self?.fetchCharacterEntitiesForEpisodes(episodes, completion: completion)
                 
             case .failure(let error):
-                self?.view.showErrorMessage(error.localizedDescription)
+                self?.view?.showErrorMessage(error.localizedDescription)
             }
             self?.serviceQueue.dequeue()
         }
@@ -143,7 +143,7 @@ extension CharacterDetailsPresenterImpl {
     }
         
     private func getCharacter(for characterUrl: String, completion: @escaping ([EpisodeDomainEntity]) -> Void) {
-        self.view.startLoader()
+        self.view?.startLoader()
         serviceQueue.enqueue()
         characterDetailsUseCase.getCharactersDetailsWithUrl(for: characterUrl) { [weak self] response in
             switch response {

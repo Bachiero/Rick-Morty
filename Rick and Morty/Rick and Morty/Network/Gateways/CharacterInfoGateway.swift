@@ -15,9 +15,11 @@ protocol CharacterInfoGateway {
 
 struct CharacterInfoGatewayImpl: CharacterInfoGateway {
     
+    private var task = URLSession.shared
+    
     func getCharacterInfo(with urlRequest: URLRequest, completion: @escaping CharacterInfoGatewayCompletion) {
         
-        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+        let task = task.dataTask(with: urlRequest) { data, response, error in
             if let _ = error {
                 completion(.failure(NetworkError.failedToGetData))
             }
@@ -32,5 +34,6 @@ struct CharacterInfoGatewayImpl: CharacterInfoGateway {
             }
         }
         task.resume()
+        self.task.invalidateAndCancel()
     }
 }
