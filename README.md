@@ -2,7 +2,7 @@
 
 #Swift Rick and Morty app
 
-iOS app showcasing the Rick and Mory API
+iOS app showcasing the Rick and Morty API
 
 - Written in Swift
 - UiKit
